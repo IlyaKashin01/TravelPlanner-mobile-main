@@ -19,8 +19,8 @@ const SignIn = () => {
     const signInHandler = () => {
         clearError();
         login(data);
-        console.log(user, SecureStore.getItemAsync('token'));
-        navigation.navigate('Regist')
+        console.log(user);
+        //navigation.navigate('Regist')
     };
 
     useEffect(() => {

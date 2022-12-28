@@ -5,19 +5,20 @@ export interface Props {
     id?: number;
     name?: string;
     description?: string;
-    dateS?: string;
-    dateE?: string;
+    dateS?: Date;
+    dateE?: Date;
 }
 
 const Travel: React.FC<Props> = ({ id, name, description, dateE, dateS }) => {
     return (
         <View style={styles.container} key={id}>
-            <Text style={styles.text}>{name}</Text>
+            <Text style={styles.text}>{id}-{name}</Text>
             <View >
                 <Text style={{ fontSize: 18 }}>{description}</Text>
             </View>
+
             <View>
-                <Text style={{ fontSize: 18, alignItems: "center", justifyContent: "center" }}>{dateS} - {dateE}</Text>
+                <Text style={{ fontSize: 18, alignItems: "center", justifyContent: "center" }}>{dateS.toString()} - {dateE.toString()}</Text>
             </View>
         </View>
     )

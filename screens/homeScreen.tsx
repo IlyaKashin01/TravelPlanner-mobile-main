@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, ScrollView } from "react-native";
-
-import PostIcon from "../../assets/images/post.png";
-import ReplyIcon from "../../assets/images/reply.png";
+import { useAuth } from "../api/hooks/useAuth";
 import PostCard from "../components/postCard";
 
 
 const HomeScreen: React.FC = () => {
-
+    const { logout } = useAuth()
+    useEffect(() => { logout() }, [])
     return (
         <ScrollView>
             <PostCard></PostCard>

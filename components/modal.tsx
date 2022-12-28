@@ -1,5 +1,6 @@
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import React, { useState, Dispatch, FC, SetStateAction } from 'react'
+import { useAuth } from "../api/hooks/useAuth";
 
 export interface Props {
     showModel?: boolean;
@@ -7,7 +8,7 @@ export interface Props {
 }
 
 const ModalProfile: React.FC<Props> = ({ showModel, setShowModel }) => {
-
+    const { logout } = useAuth();
     return (
         <View style={styles.centeredView}>
             <Modal
@@ -25,6 +26,12 @@ const ModalProfile: React.FC<Props> = ({ showModel, setShowModel }) => {
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setShowModel(!showModel)}
+                        >
+                            <Text style={styles.textStyle}>Hide Modal</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={logout}
                         >
                             <Text style={styles.textStyle}>Hide Modal</Text>
                         </Pressable>

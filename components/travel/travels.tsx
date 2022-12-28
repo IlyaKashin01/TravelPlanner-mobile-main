@@ -1,64 +1,42 @@
 import { StyleSheet, View, Pressable, ScrollView, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
-import { SearchBar } from '@rneui/base';
 import { Tab, TabView, Text } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
 import Travel from './travel';
+import { useTravel } from '../../api/hooks/useTravel';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import ModalCreateTravel from './modalCreateTravel';
+
 
 const { width, height } = Dimensions.get('screen')
-const DATA = [
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-    {
-        name: 'Крым',
-        description: 'Путешествие всей семьей в Крым',
-        dateE: '24.12.2022',
-        dateS: '01.01.2023'
-    },
-]
-const Travels = () => {
-    const [value, setValue] = React.useState("");
 
+const Travels = () => {
+    const navigation = useNavigation<StackNavigationProp<any>>();
+
+    const [take, setTake] = React.useState(5);
+    const [skip, setSkip] = React.useState(0);
+    const [searchValue] = React.useState(1);
+    const [modalVisible, setModalVisible] = React.useState(false);
+
+    const { travel, travels, isLoading, getTravels, clearError, } = useTravel()
+
+    React.useEffect(() => {
+        clearError();
+        getTravels(skip, take, searchValue);
+    }, [])
+
+    async function getMoreTravels() {
+        getTravels(skip, take, searchValue);
+        setTake(take + take);
+    }
     const renderItem = ({ item }) => (
-        <Travel id={item.id} name={item.name} description={item.description} dateE={item.dateE} dateS={item.dateS} />
+        <Travel id={item.id} name={item.name} description={item.description} dateE={item.dateEnd} dateS={item.dateStart} />
     );
+
     return (
         <View>
-            <SearchBar
+            {/* <SearchBar
                 platform="default"
                 containerStyle={{ backgroundColor: "white" }}
                 inputContainerStyle={{ borderRadius: 50, backgroundColor: "#2196F3" }}
@@ -74,26 +52,30 @@ const Travels = () => {
                 //cancelButtonProps={{}}
                 //onCancel={() => console.log(onCancel())}
                 value={value}
-            />
-            {value &&
-                <View><Text>{value}</Text></View>
-            }
-            {!value &&
+            /> */}
+            {!travels ?
+                <View><Text>Error get journeys</Text></View>
+                :
                 <View>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                    //onPress={() => setShowModel(!showModel)}
+                        onPress={() => navigation.navigate('CreateTravel')}
                     >
                         <Ionicons name="add" size={24} color="white" />
                         <Text style={styles.textStyle}>Create travel</Text>
                     </Pressable>
 
-                    <FlatList style={{ flexGrow: 1, width, height }}
-                        data={DATA}
+                    <FlatList style={{ marginBottom: 125 }}
+                        data={travels}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}
+                        showsVerticalScrollIndicator={false}
+                        onScroll={getMoreTravels}
                     />
                 </View>
+            }
+            {modalVisible &&
+                <ModalCreateTravel />
             }
         </View>
     )

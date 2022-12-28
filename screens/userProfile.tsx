@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import ModalProfile from "../components/modal";
+import { useAuth } from "../api/hooks/useAuth";
 
 const UserProfile: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
+    const { user } = useAuth();
     return (
 
 
@@ -31,8 +33,8 @@ const UserProfile: React.FC = () => {
                 </View>
 
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Ilya {modalVisible}</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Programmer</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{user.firstName + " " + user.lastName}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{user.login}</Text>
                 </View>
 
                 <View style={styles.statsContainer}>

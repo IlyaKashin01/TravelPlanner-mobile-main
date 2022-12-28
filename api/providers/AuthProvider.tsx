@@ -67,12 +67,13 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                     authRequest
                 )
                 .then(resp => resp);
-
             if (data.success) {
                 setUser(data?.result?.person);
-
+                console.log("user:", data);
                 await SecureStore.setItemAsync('token', data.result!.token);
             }
+
+
         } catch (e: any) {
             setError(e?.response?.data?.message);
         } finally {
@@ -106,7 +107,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             clearError,
             setError,
         }),
-        [user, isLoading, error, setError]
+        [user, isLoading, error, setError, logout]
     );
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
