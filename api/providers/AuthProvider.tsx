@@ -25,6 +25,7 @@ type Props = { children: ReactNode };
 
 export const AuthProvider: FC<Props> = ({ children }) => {
     const [user, setUser] = useState<IPerson | null>();
+    const [token, setToken] = useState<string>();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -67,14 +68,15 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                     authRequest
                 )
                 .then(resp => resp);
-            if (data.success) {
-                setUser(data?.result?.person);
-                console.log("user:", data);
-                await SecureStore.setItemAsync('token', data.result!.token);
+
+            if (data.result!.person) {
+                setUser(data.result!.person);
+                setToken(data.result!.token);
+                //await SecureStore.setItemAsync('token', data.result!.token)
             }
-
-
         } catch (e: any) {
+            console.log(e);
+
             setError(e?.response?.data?.message);
         } finally {
             setIsLoading(false);
@@ -98,6 +100,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     const value = useMemo(
         () => ({
             user,
+            token,
             isLoading,
             login,
             registration,
@@ -107,7 +110,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
             clearError,
             setError,
         }),
-        [user, isLoading, error, setError, logout]
+        [user, token, isLoading, error, setError, logout,]
     );
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

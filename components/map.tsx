@@ -4,6 +4,7 @@ import React from 'react'
 import MapViewDirections from 'react-native-maps-directions';
 
 const Map = () => {
+
     const coordinates = [
         {
             latitude: 56.191438,

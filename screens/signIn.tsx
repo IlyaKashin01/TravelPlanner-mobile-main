@@ -16,11 +16,9 @@ const SignIn = () => {
         password: '',
     });
 
-    const signInHandler = () => {
+    const signInHandler = async () => {
         clearError();
         login(data);
-        console.log(user);
-        //navigation.navigate('Regist')
     };
 
     useEffect(() => {

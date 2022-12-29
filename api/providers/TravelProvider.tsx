@@ -15,6 +15,7 @@ import * as SecureStore from 'expo-secure-store';
 import { ITravelContext } from '../contexts/ITravelContext';
 import { ICreateTravel, ITravel } from '../interfaces/travel';
 import { IPagination } from '../interfaces/pagination';
+import { useAuth } from '../hooks/useAuth';
 
 export const TravelContext = createContext<ITravelContext>({} as ITravelContext);
 
@@ -25,6 +26,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
     const [travels, setTravels] = useState<ITravel[]>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { getToken, token } = useAuth();
 
     const clearError = () => setError(null);
 
@@ -36,7 +38,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
                     `${API_HOST}journey/getAllJourney?_skip=${skip}&_take=${take}&_searchValue=${searchValue}`,
                     {
                         headers: {
-                            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsImV4cCI6MTY3Mjg1ODg1MSwiaXNzIjoiYXV0aFNlcnZlciIsImF1ZCI6ImF1dGhDbGllbnQifQ.3uzH4ti-f_jKV0xfuJum9HK7BHS3WJ52_F_-VJn9g2M`,
+                            Authorization: `Bearer ${token}`,
                         },
                     }
                 )
@@ -48,7 +50,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
             setTravels(data?.result?.items);
             console.log(data);
         } catch (e) {
-            console.log(e);
+            console.log(getToken());
         } finally {
         }
     }
@@ -63,7 +65,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsImV4cCI6MTY3Mjg1ODg1MSwiaXNzIjoiYXV0aFNlcnZlciIsImF1ZCI6ImF1dGhDbGllbnQifQ.3uzH4ti-f_jKV0xfuJum9HK7BHS3WJ52_F_-VJn9g2M`,
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsImV4cCI6MTY3Mjg1MzIxMiwiaXNzIjoiYXV0aFNlcnZlciIsImF1ZCI6ImF1dGhDbGllbnQifQ.CLkKkzGYs2X3LeTjKpuiiL2eEOo9UsVosWdUQss0rqw`,
                     },
                 }
             )

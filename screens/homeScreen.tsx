@@ -5,8 +5,6 @@ import PostCard from "../components/postCard";
 
 
 const HomeScreen: React.FC = () => {
-    const { logout } = useAuth()
-    useEffect(() => { logout() }, [])
     return (
         <ScrollView>
             <PostCard></PostCard>

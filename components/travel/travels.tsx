@@ -7,6 +7,8 @@ import { useTravel } from '../../api/hooks/useTravel';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ModalCreateTravel from './modalCreateTravel';
+import * as SecureStore from 'expo-secure-store';
+import { useService } from '../../api/hooks/useService';
 
 
 const { width, height } = Dimensions.get('screen')
@@ -54,7 +56,7 @@ const Travels = () => {
                 value={value}
             /> */}
             {!travels ?
-                <View><Text>Error get journeys</Text></View>
+                <View><Text>Error get journeys </Text></View>
                 :
                 <View>
                     <Pressable

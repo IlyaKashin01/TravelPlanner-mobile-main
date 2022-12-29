@@ -4,15 +4,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MenuProvider } from 'react-native-popup-menu';
 import TravelProvider from './api/providers/TravelProvider';
 import Navigation from './components/navigation/navigation';
+import CoordinatesProvider from './api/providers/CoordinatesProvider';
+import ServiceProvider from './api/providers/ServiceProvider';
 
 export default function App() {
   return (
     <SafeAreaView style={{ height: '100%' }}>
-      <AuthProvider>
+      <AuthProvider >
         <TravelProvider>
-          <MenuProvider>
-            <Navigation />
-          </MenuProvider>
+          <CoordinatesProvider>
+            <ServiceProvider>
+              <MenuProvider>
+                <Navigation />
+              </MenuProvider>
+            </ServiceProvider>
+          </CoordinatesProvider>
         </TravelProvider>
       </AuthProvider>
     </SafeAreaView>

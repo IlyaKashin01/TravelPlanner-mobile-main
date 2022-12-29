@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import BottomNav from './bottomNav';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
@@ -12,13 +12,19 @@ import { useAuth } from '../../api/hooks/useAuth';
 import SignIn from '../../screens/signIn';
 import SignUp from '../../screens/signUp';
 import ModalCreateTravel from '../travel/modalCreateTravel';
+import * as SecureStore from 'expo-secure-store';
+import TravelDetails from '../travel/TravelDetails';
+import CreateCoordinates from '../coordinates/CreateCoordinates';
+import CoordinatesList from '../coordinates/CoordinatesList';
+import CreateService from '../service/CreateService';
+import ServicesList from '../service/ServicesList';
 
-const Navigation = () => {
+const Navigation: FC = () => {
     const Stack = createNativeStackNavigator();
-    const { user } = useAuth();
+    const { user } = useAuth(); console.log(user)
     const ref = useNavigationContainerRef();
     return (
-        <NavigationContainer ref={ref}>
+        <NavigationContainer ref={ref} >
             <Stack.Navigator>
                 {user ? (
                     <>
@@ -31,6 +37,11 @@ const Navigation = () => {
                         <Stack.Screen name="CreateTravel" component={ModalCreateTravel} />
                         <Stack.Screen name="Account" component={Profile} />
                         <Stack.Screen name="Chat" component={ChatScreen} />
+                        <Stack.Screen name="travelInfo" component={TravelDetails} />
+                        <Stack.Screen name="addCoordinates" component={CreateCoordinates} />
+                        <Stack.Screen name="showCoordinates" component={CoordinatesList} />
+                        <Stack.Screen name="createService" component={CreateService} />
+                        <Stack.Screen name="listServices" component={ServicesList} />
                     </>
                 ) :
                     (

@@ -37,7 +37,7 @@ const UserProfile: React.FC = () => {
                     <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{user.login}</Text>
                 </View>
 
-                <View style={styles.statsContainer}>
+                {/* <View style={styles.statsContainer}>
                     <View style={styles.statsBox}>
                         <Text style={[styles.text, { fontSize: 24 }]}>483</Text>
                         <Text style={[styles.text, styles.subText]}>Posts</Text>
@@ -50,7 +50,7 @@ const UserProfile: React.FC = () => {
                         <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
                         <Text style={[styles.text, styles.subText]}>Following</Text>
                     </View>
-                </View>
+                </View> */}
 
                 <View style={{ marginTop: 32 }}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

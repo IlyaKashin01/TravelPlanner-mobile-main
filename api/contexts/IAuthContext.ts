@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 export interface IAuthContext {
     user: IPerson | null | undefined;
+    token: string;
     isLoading: boolean;
     login: (authRequest: IAuthRequest) => Promise<any>;
     registration: (signUpRequest: ISignUpRequest) => Promise<boolean>;
