@@ -33,6 +33,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
     const getTravels = async (skip?: number, take?: number, searchValue?: number)
         : Promise<void> => {
         try {
+            getToken();
             const { data } = await axios
                 .get<IOperationResult<any>>(
                     `${API_HOST}journey/getAllJourney?_skip=${skip}&_take=${take}&_searchValue=${searchValue}`,
@@ -57,7 +58,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
 
     const createTravel = async (JourneyRequest: ICreateTravel): Promise<IOperationResult<number>> => {
         try {
-
+            getToken();
             const { data } = await axios.post<IOperationResult<number>>(
                 `http://192.168.1.56:7143/api/journey/createJourney`,
                 {
@@ -65,7 +66,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoidXNlciIsImV4cCI6MTY3Mjg1MzIxMiwiaXNzIjoiYXV0aFNlcnZlciIsImF1ZCI6ImF1dGhDbGllbnQifQ.CLkKkzGYs2X3LeTjKpuiiL2eEOo9UsVosWdUQss0rqw`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             )

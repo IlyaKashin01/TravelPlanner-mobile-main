@@ -42,6 +42,7 @@ const Navigation: FC = () => {
                         <Stack.Screen name="showCoordinates" component={CoordinatesList} />
                         <Stack.Screen name="createService" component={CreateService} />
                         <Stack.Screen name="listServices" component={ServicesList} />
+                        <Stack.Screen name="dialogue" component={ChatScreen} />
                     </>
                 ) :
                     (

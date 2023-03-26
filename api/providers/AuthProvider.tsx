@@ -73,6 +73,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 setUser(data.result!.person);
                 setToken(data.result!.token);
                 //await SecureStore.setItemAsync('token', data.result!.token)
+                localStorage.setItem('token', data.result!.token);
             }
         } catch (e: any) {
             console.log(e);
@@ -91,7 +92,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
     const getToken = async (): Promise<string | null> => {
         try {
-            return await SecureStore.getItemAsync('token').then(token => token);
+            return localStorage.getItem('token');
         } catch (e: any) {
             return null;
         }

@@ -9,6 +9,7 @@ import Map from '../map';
 import HomeScreen from '../../screens/homeScreen';
 import UserProfile from '../../screens/userProfile';
 import Travels from '../travel/travels';
+import ChatList from '../chat/chatList';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,7 +54,7 @@ const BottomNav: React.FC = () => {
             />
             <Tab.Screen
                 name="Chat"
-                component={ChatScreen}
+                component={ChatList}
                 options={{
                     tabBarLabel: 'Chat',
                     tabBarIcon: ({ color, size }) => (
