@@ -6,6 +6,8 @@ import TravelProvider from './api/providers/TravelProvider';
 import Navigation from './components/navigation/navigation';
 import CoordinatesProvider from './api/providers/CoordinatesProvider';
 import ServiceProvider from './api/providers/ServiceProvider';
+import ParsingProvider from './api/providers/ParsingProvider';
+import FriendProvider from './api/providers/FriendProvider';
 
 export default function App() {
   return (
@@ -14,9 +16,13 @@ export default function App() {
         <TravelProvider>
           <CoordinatesProvider>
             <ServiceProvider>
-              <MenuProvider>
-                <Navigation />
-              </MenuProvider>
+              <ParsingProvider>
+                <FriendProvider>
+                  <MenuProvider>
+                    <Navigation />
+                  </MenuProvider>
+                </FriendProvider>
+              </ParsingProvider>
             </ServiceProvider>
           </CoordinatesProvider>
         </TravelProvider>

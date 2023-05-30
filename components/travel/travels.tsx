@@ -1,4 +1,4 @@
-import { StyleSheet, View, Pressable, ScrollView, FlatList, TouchableOpacity, Dimensions } from 'react-native'
+import { StyleSheet, View, Pressable, ScrollView, FlatList, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { Tab, TabView, Text } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ModalCreateTravel from './modalCreateTravel';
 import * as SecureStore from 'expo-secure-store';
 import { useService } from '../../api/hooks/useService';
+import { useAuth } from '../../api/hooks/useAuth';
 
 
 const { width, height } = Dimensions.get('screen')
@@ -18,18 +19,18 @@ const Travels = () => {
 
     const [take, setTake] = React.useState(5);
     const [skip, setSkip] = React.useState(0);
-    const [searchValue] = React.useState(1);
     const [modalVisible, setModalVisible] = React.useState(false);
 
-    const { travel, travels, isLoading, getTravels, clearError, } = useTravel()
+    const { travel, travels, isLoading, getTravels, clearError, error } = useTravel()
+    const { user } = useAuth();
 
     React.useEffect(() => {
         clearError();
-        getTravels(skip, take, searchValue);
+        getTravels(skip, take, user.id);
     }, [])
 
     async function getMoreTravels() {
-        getTravels(skip, take, searchValue);
+        getTravels(skip, take, user.id);
         setTake(take + take);
     }
     const renderItem = ({ item }) => (
@@ -55,18 +56,19 @@ const Travels = () => {
                 //onCancel={() => console.log(onCancel())}
                 value={value}
             /> */}
-            {!travels ?
-                <View><Text>Error get journeys </Text></View>
+            <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => navigation.navigate('CreateTravel')}
+            >
+                <Ionicons name="add" size={24} color="white" />
+                <Text style={styles.textStyle}>Create travel</Text>
+            </Pressable>
+            {isLoading ?
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top: 15 }}>
+                    <ActivityIndicator size="large" color="blue" />
+                </View>
                 :
                 <View>
-                    <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => navigation.navigate('CreateTravel')}
-                    >
-                        <Ionicons name="add" size={24} color="white" />
-                        <Text style={styles.textStyle}>Create travel</Text>
-                    </Pressable>
-
                     <FlatList style={{ marginBottom: 125 }}
                         data={travels}
                         renderItem={renderItem}
@@ -74,6 +76,7 @@ const Travels = () => {
                         showsVerticalScrollIndicator={false}
                         onScroll={getMoreTravels}
                     />
+                    {error && <Text style={{ color: "red" }}>{error}</Text>}
                 </View>
             }
             {modalVisible &&

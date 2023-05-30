@@ -1,10 +1,11 @@
-import { View, Text, Image, StyleSheet, TextInput, Pressable } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../api/hooks/useAuth';
 import { IAuthRequest } from '../api/interfaces/auth';
 import * as SecureStore from 'expo-secure-store';
+import { AntDesign } from '@expo/vector-icons';
 
 const SignIn = () => {
     const navigation = useNavigation<StackNavigationProp<any>>();
@@ -45,6 +46,13 @@ const SignIn = () => {
                     <Text style={styles.textStyle}>Sign in</Text>
                 </Pressable>
             </View>
+            {error && <Text style={{ color: "red" }}>{error}</Text>}
+            {isLoading &&
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top: 15 }}>
+                    <ActivityIndicator size="large" color="blue" />
+                    <AntDesign name="loading2" size={24} color="blue" />
+                </View>
+            }
         </View>
     )
 }

@@ -3,9 +3,9 @@ import { TouchableOpacity, View, StyleSheet, Text, Image, ScrollView } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import UserProfile from '../screens/userProfile';
+import UserProfile from '../../screens/userProfile';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useAuth } from '../api/hooks/useAuth';
+import { useAuth } from '../../api/hooks/useAuth';
 
 
 const PostCard: React.FC = () => {
@@ -17,23 +17,17 @@ const PostCard: React.FC = () => {
         <View style={styles.container}>
             <TouchableOpacity onPress={() => navigation.navigate('Account')}>
                 <View style={[styles.subContainer, { marginBottom: 20 }]}>
-                    <View style={styles.profileImage}>
-                        <Image source={require("../assets/images/profile.jpg")} style={styles.image} resizeMode="cover"></Image>
+                    <View>
+                        <Image source={require("../../assets/images/profile.jpg")} style={styles.avatar} resizeMode="cover"></Image>
                     </View>
                     <Text style={[styles.text, { fontWeight: "200", fontSize: 28, marginLeft: 10 }]}>{user.firstName} {user.lastName}</Text>
                 </View>
             </TouchableOpacity>
             <View >
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
-                    </View>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
-                    </View>
-                    <View style={styles.mediaImageContainer}>
-                        <Image source={require("../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
-                    </View>
+                    <Image source={require("../../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
+                    <Image source={require("../../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
+                    <Image source={require("../../assets/images/281.jpg")} style={styles.image} resizeMode="cover"></Image>
                 </ScrollView>
             </View>
             <Text style={[styles.text, { fontWeight: "200", fontSize: 28 }]}>Blog post</Text>
@@ -65,8 +59,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FFF",
         borderRadius: 25,
-        padding: 25,
-        margin: 10
+        padding: 10,
+        margin: 5,
+        width: "100%",
+        height: "100%",
     },
     button: {
         margin: 20,
@@ -85,21 +81,21 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        height: undefined,
-        width: undefined
+        height: 200,
+        width: 300,
+        borderRadius: 10
+    },
+    avatar: {
+        flex: 1,
+        height: 40,
+        width: 40,
+        borderRadius: 20
     },
     profileImage: {
         width: 40,
         height: 40,
         borderRadius: 100,
         overflow: "hidden"
-    },
-    mediaImageContainer: {
-        width: 280,
-        height: 280,
-        borderRadius: 12,
-        overflow: "hidden",
-        marginHorizontal: 10
     },
 });
 export default PostCard;

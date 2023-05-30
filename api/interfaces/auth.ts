@@ -6,6 +6,7 @@ export interface IPerson {
     middleName?: string,
     email?: string,
     phone?: string,
+    avatar?: any
 }
 
 export interface IAuthRequest {

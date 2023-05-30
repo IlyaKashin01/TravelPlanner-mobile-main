@@ -13,7 +13,7 @@ const ChatList: React.FC = () => {
     const click = (x, y) => { setD(x); setAva(y); setOn(true); navigation.navigate('dialogue', { nameDialogue: nameD, avatar: ava }); }
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity onPress={() => navigation.navigate('dialogue', { ...item })}>
+            <TouchableOpacity onPress={() => navigation.navigate('dialogue')}>
                 <View style={styles.chatItem}>
                     {item.isGroupChat ? (
                         <View style={styles.groupAvatarContainer}>

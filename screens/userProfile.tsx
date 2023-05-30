@@ -1,27 +1,28 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView, TouchableOpacity, Pressable, Modal } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import ModalProfile from "../components/modal";
 import { useAuth } from "../api/hooks/useAuth";
+import { Modalize } from 'react-native-modalize';
 
 const UserProfile: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
+
     const { user } = useAuth();
     return (
-
 
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableOpacity
                     style={[styles.button, styles.buttonOpen]}
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => setModalVisible(!modalVisible)}
                 >
                     <MaterialIcons name="menu" size={30} color="black" />
                 </TouchableOpacity>
                 <View style={{ alignSelf: "center", marginTop: 60 }}>
 
                     <View style={styles.profileImage}>
-                        <Image source={require("../assets/images/profile.jpg")} style={styles.image} resizeMode="center"></Image>
+                        <Image source={{ uri: `data:image/jpeg;base64,${user.avatar}` }} style={styles.image} resizeMode="center"></Image>
                     </View>
                     {/* <View style={styles.dm}>
                         <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
@@ -89,9 +90,9 @@ const UserProfile: React.FC = () => {
                         </View>
                     </View>
                 </View>
-                {modalVisible &&
-                    <ModalProfile showModel={modalVisible} setShowModel={setModalVisible} />
-                }
+
+                <ModalProfile showModal={modalVisible} setShowModal={setModalVisible} />
+
             </ScrollView>
         </SafeAreaView>
     )

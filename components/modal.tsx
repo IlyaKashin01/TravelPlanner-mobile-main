@@ -1,23 +1,29 @@
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import React, { useState, Dispatch, FC, SetStateAction } from 'react'
+import { Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity, ScrollView } from "react-native";
+import React, { useState, useRef, Dispatch, FC, SetStateAction } from 'react'
 import { useAuth } from "../api/hooks/useAuth";
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Modalize } from 'react-native-modalize';
 
 export interface Props {
-    showModel?: boolean;
-    setShowModel: Dispatch<SetStateAction<boolean>>;
+    showModal: boolean;
+    setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalProfile: React.FC<Props> = ({ showModel, setShowModel }) => {
+const ModalProfile: React.FC<Props> = ({ showModal, setShowModal }) => {
     const { logout } = useAuth();
+    const navigation = useNavigation<StackNavigationProp<any>>();
+
     return (
-        <View style={styles.centeredView}>
+        <View style={styles.centeredView} >
+
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={showModel}
+                visible={showModal}
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    setShowModel(!showModel);
+                    setShowModal(!showModal);
                 }}
             >
                 <View style={styles.centeredView}>
@@ -25,15 +31,21 @@ const ModalProfile: React.FC<Props> = ({ showModel, setShowModel }) => {
                         <Text style={styles.modalText}>Hello World!</Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
-                            onPress={() => setShowModel(!showModel)}
+                            onPress={() => setShowModal(!showModal)}
                         >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
+                            <Text style={styles.textStyle}>Закрыть окно</Text>
+                        </Pressable>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => { setShowModal(!showModal); navigation.navigate("addAvatar"); }}
+                        >
+                            <Text style={styles.textStyle}>Добавить аватар</Text>
                         </Pressable>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={logout}
                         >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
+                            <Text style={styles.textStyle}>Выйти</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -61,10 +73,7 @@ const styles = StyleSheet.create({
         padding: 35,
         alignItems: "center",
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
+
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5

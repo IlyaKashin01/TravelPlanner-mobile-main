@@ -18,6 +18,7 @@ import { IOperationResult } from '../interfaces/operationResult';
 import { API_HOST } from '../apiHost';
 import * as SecureStore from 'expo-secure-store';
 import { IAuthContext } from '../contexts/IAuthContext';
+import { Alert } from 'react-native';
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
@@ -75,6 +76,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
                 //await SecureStore.setItemAsync('token', data.result!.token)
                 localStorage.setItem('token', data.result!.token);
             }
+            //if (data.message) Alert.alert(data.message)
         } catch (e: any) {
             console.log(e);
 

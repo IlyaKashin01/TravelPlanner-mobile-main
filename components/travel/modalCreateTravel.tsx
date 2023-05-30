@@ -6,10 +6,12 @@ import { ICreateTravel } from '../../api/interfaces/travel';
 import { useTravel } from '../../api/hooks/useTravel';
 import DateField from 'react-native-datefield';
 import moment from 'moment';
+import { useAuth } from '../../api/hooks/useAuth';
 
 const ModalCreateTravel: FC = () => {
     const navigation = useNavigation<StackNavigationProp<any>>();
-    const { clearError, createTravel } = useTravel();
+    const { clearError, createTravel, getTravels } = useTravel();
+    const { user } = useAuth();
     const [alert, setAlert] = useState(false);
 
 
@@ -19,7 +21,10 @@ const ModalCreateTravel: FC = () => {
 
     const create = async () => {
         clearError(); //console.log(data)
-        if (await createTravel(data)) navigation.navigate('Travels');
+        if (await createTravel(data)) {
+            getTravels(0, 5, user.id)
+            navigation.goBack();
+        }
         else setAlert(true);
     };
 

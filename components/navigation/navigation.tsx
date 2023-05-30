@@ -18,10 +18,11 @@ import CreateCoordinates from '../coordinates/CreateCoordinates';
 import CoordinatesList from '../coordinates/CoordinatesList';
 import CreateService from '../service/CreateService';
 import ServicesList from '../service/ServicesList';
+import ProfileAvatar from '../uploadFIles/profileAvatar';
 
 const Navigation: FC = () => {
     const Stack = createNativeStackNavigator();
-    const { user } = useAuth(); console.log(user)
+    const { user, token } = useAuth(); console.log(user)
     const ref = useNavigationContainerRef();
     return (
         <NavigationContainer ref={ref} >
@@ -43,6 +44,7 @@ const Navigation: FC = () => {
                         <Stack.Screen name="createService" component={CreateService} />
                         <Stack.Screen name="listServices" component={ServicesList} />
                         <Stack.Screen name="dialogue" component={ChatScreen} />
+                        <Stack.Screen name="addAvatar" component={ProfileAvatar} />
                     </>
                 ) :
                     (

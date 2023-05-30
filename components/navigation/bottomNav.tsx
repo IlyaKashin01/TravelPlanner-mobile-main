@@ -5,11 +5,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import ChatScreen from '../../screens/chatScreen';
-import Map from '../map';
 import HomeScreen from '../../screens/homeScreen';
 import UserProfile from '../../screens/userProfile';
 import Travels from '../travel/travels';
 import ChatList from '../chat/chatList';
+import Friends from '../friends';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,12 +43,12 @@ const BottomNav: React.FC = () => {
                 }}
             />
             <Tab.Screen
-                name="Map"
-                component={Map}
+                name="Friends"
+                component={Friends}
                 options={{
-                    tabBarLabel: 'Map',
+                    tabBarLabel: 'Friends',
                     tabBarIcon: ({ color, size }) => (
-                        <FontAwesome5 name="map-marked-alt" size={size} color={color} />
+                        <FontAwesome5 name="user-friends" size={size} color={color} />
                     ),
                 }}
             />
@@ -60,7 +60,7 @@ const BottomNav: React.FC = () => {
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name="chatbubble" size={size} color={color} />
                     ),
-                    tabBarBadge: 3,
+                    //tabBarBadge: 3,
                 }}
             />
             <Tab.Screen

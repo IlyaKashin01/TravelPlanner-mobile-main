@@ -1,33 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../api/hooks/useAuth";
-import PostCard from "../components/postCard";
+import PostCard from "../components/post/postCard";
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import Slider from "../components/slider/slider";
+import News from "../components/post/news";
+import Flights from "../components/flights/flights";
+import Hotels from "../components/hotels/hotels";
 
 const HomeScreen: React.FC = () => {
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState(0);
-
+    const slides = [
+        {
+            id: 1,
+            title: 'Slide 1',
+            content: 'This is the first slide',
+        },
+        {
+            id: 2,
+            title: 'Slide 2',
+            content: 'This is the second slide',
+        },
+        {
+            id: 3,
+            title: 'Slide 3',
+            content: 'This is the third slide',
+        },
+    ];
     return (
-        // <ScrollView>
-        //     <PostCard></PostCard>
-        //     <PostCard></PostCard>
-        //     <PostCard></PostCard>
-        // </ScrollView>
         <View style={styles.container}>
             <View style={styles.locationContainer}>
                 <FontAwesome name="map-marker" size={20} color="black" style={styles.locationIcon} />
-                <Text style={styles.locationText}>New York, NY</Text>
+                <Text style={styles.locationText}>Владимир, РФ</Text>
                 <TouchableOpacity style={styles.avatarContainer}>
-                    <Image source={require('../assets/images/profile.jpg')} style={styles.avatar} />
+                    <Image source={{ uri: `data:image/jpeg;base64,${user.avatar}` }} style={styles.avatar} />
                 </TouchableOpacity>
             </View>
-            <View style={styles.searchContainer}>
+            {/* <View style={styles.searchContainer}>
                 <TextInput style={styles.searchInput} placeholder="Search" />
                 <TouchableOpacity style={styles.filterButton}>
                     <SimpleLineIcons name="equalizer" size={15} color="black" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
             <View style={styles.tabContainer}>
                 <TouchableOpacity style={[styles.tabInactive, activeTab === 0 && styles.tabActive]} onPress={() => setActiveTab(0)}>
                     <Text style={[styles.tabLabelInactive, activeTab === 0 && styles.tabLabelActive]}>Explore</Text>
@@ -50,11 +66,17 @@ const HomeScreen: React.FC = () => {
                     {activeTab === 4 && <Text style={styles.dot}></Text>}
                 </TouchableOpacity>
             </View>
-            {activeTab === 0 ? <ScrollView style={{ width: "100%" }}><PostCard></PostCard></ScrollView> : activeTab === 1 ?
+            {activeTab === 0 ?
                 <ScrollView style={{ width: "100%" }}>
-                    <PostCard></PostCard>
-                    <PostCard></PostCard>
-                </ScrollView> : <View />}
+                    <Slider slides={slides} />
+                    <News />
+                </ScrollView> : activeTab === 1 ?
+                    <Flights />
+                    : activeTab === 2 ?
+                        <Hotels />
+                        :
+                        <View />
+            }
         </View>
     );
 };

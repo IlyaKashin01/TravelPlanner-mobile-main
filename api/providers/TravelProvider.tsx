@@ -30,7 +30,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
 
     const clearError = () => setError(null);
 
-    const getTravels = async (skip?: number, take?: number, searchValue?: number)
+    const getTravels = async (skip: number, take: number, searchValue: number)
         : Promise<void> => {
         try {
             getToken();
@@ -49,7 +49,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
                     return x;
                 });
             setTravels(data?.result?.items);
-            console.log(data);
+            if (data.message) setError(data.message);
         } catch (e) {
             console.log(getToken());
         } finally {
