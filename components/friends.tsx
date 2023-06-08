@@ -8,7 +8,7 @@ import { useAuth } from '../api/hooks/useAuth';
 import { AntDesign } from '@expo/vector-icons';
 
 const Friends = () => {
-    const { friends, getFriends, isLoading } = useFriends();
+    const { friends, getFriends, searchResult, search, isLoading } = useFriends();
     const { user } = useAuth();
     useEffect(() => {
         getFriends(0, 10, 1);
@@ -23,98 +23,21 @@ const Friends = () => {
                     </View>
                     <View style={styles.chatInfo}>
                         <Text style={styles.chatName}>{item.login}</Text>
+                        <Text style={styles.chatName}>{item.firstName} {item.lastName}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     };
-    const DATA = [
-        {
-            id: '1',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '2',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '3',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '4',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '5',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '6',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '7',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '8',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '9',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-        {
-            id: '10',
-            name: 'Пользователь',
-            avatar: require('../assets/images/profile.jpg'),
-            lastMessage: 'Тест',
-            lastMessageDate: 'Добавить',
-            isGroupChat: false,
-        },
-    ];
+
     const [searchValue, setSearchValue] = useState<string>("");
     return (
         <GestureHandlerRootView style={styles.container}>
             <View style={styles.searchContainer}>
                 <TextInput style={styles.searchInput} placeholder="Search" value={searchValue} onChangeText={(value) => setSearchValue(value)} />
+                <TouchableOpacity style={styles.filterButton} onPress={() => search(searchValue)}>
+                    <AntDesign name="search1" size={15} color="black" />
+                </TouchableOpacity>
             </View>
 
             {searchValue === "" ?
@@ -131,43 +54,55 @@ const Friends = () => {
                         scrollEnabled={true}
                     />
                 :
-                <ScrollView>
-                    <View style={{ backgroundColor: "white", alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: "blue" }}>
-                        <Text style={{ fontSize: 18, color: 'blue', padding: 5 }}>Друзья</Text>
+                isLoading === true ?
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', top: 15 }}>
+                        <ActivityIndicator size="large" color="blue" />
                     </View>
-                    {DATA.map((item) => (
-                        <TouchableOpacity key={item.id}>
-                            <View style={styles.chatItem}>
+                    :
+                    <ScrollView>
+                        {searchResult?.addedFriendResult.length !== 0 &&
+                            <View style={{ backgroundColor: "white", alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: "blue" }}>
+                                <Text style={{ fontSize: 18, color: 'blue', padding: 5 }}>Друзья</Text>
+                            </View>}
 
-                                <View style={styles.avatarContainer}>
-                                    <Image source={item.avatar} style={styles.avatar} />
-                                </View>
-                                <View style={styles.chatInfo}>
-                                    <Text style={styles.chatName}>{item.name}</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                    <View style={{ backgroundColor: "white", alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: "blue" }}>
-                        <Text style={{ fontSize: 18, color: 'blue', padding: 5 }}>Поиск</Text>
-                    </View>
-                    {DATA.map((item) => (
-                        <TouchableOpacity key={item.id}>
-                            <View style={styles.chatItem}>
+                        {searchResult?.addedFriendResult.map((item) => (
+                            <TouchableOpacity >
+                                <View style={styles.chatItem} key={item.id}>
 
-                                <View style={styles.avatarContainer}>
-                                    <Image source={item.avatar} style={styles.avatar} />
+                                    <View style={styles.avatarContainer}>
+                                        <Image source={{ uri: `data:image/jpeg;base64,${item.avatar}` }} style={styles.avatar} />
+                                    </View>
+                                    <View style={styles.chatInfo}>
+                                        <Text style={styles.chatName}>{item.login}</Text>
+                                        <Text style={styles.chatName}>{item.firstName} {item.lastName}</Text>
+                                    </View>
                                 </View>
-                                <View style={styles.chatInfo}>
-                                    <Text style={styles.chatName}>{item.name}</Text>
+                            </TouchableOpacity>
+                        ))}
+
+                        {searchResult?.noAddedFriendResult.length !== 0 &&
+                            <View style={{ backgroundColor: "white", alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: "blue" }}>
+                                <Text style={{ fontSize: 18, color: 'blue', padding: 5 }}>Поиск</Text>
+                            </View>}
+
+                        {searchResult?.noAddedFriendResult.map((item) => (
+                            <TouchableOpacity >
+                                <View style={styles.chatItem} key={item.id}>
+
+                                    <View style={styles.avatarContainer}>
+                                        <Image source={{ uri: `data:image/jpeg;base64,${item.avatar}` }} style={styles.avatar} />
+                                    </View>
+                                    <View style={styles.chatInfo}>
+                                        <Text style={styles.chatName}>{item.login}</Text>
+                                        <Text style={styles.chatName}>{item.firstName} {item.lastName}</Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.button}>
+                                        <Text style={styles.lastMessageDate}>Добавить</Text>
+                                    </TouchableOpacity>
                                 </View>
-                                <TouchableOpacity style={styles.button}>
-                                    <Text style={styles.lastMessageDate}>{item.lastMessageDate}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
             }
         </GestureHandlerRootView>
     )
@@ -195,13 +130,14 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        marginRight: 10,
+        marginRight: 5,
     },
     filterButton: {
         backgroundColor: 'white',
         borderRadius: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
+        marginRight: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 15,
     },
     filterButtonText: {
         fontSize: 16,

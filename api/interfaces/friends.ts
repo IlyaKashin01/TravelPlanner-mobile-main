@@ -5,12 +5,18 @@ export interface IFriendRequest {
 
 
 export interface IFriendResponse {
-    PersonOne: number;
-    PersonTwo: number;
-    Status: any;
-    Login: string;
-    FirstName: string;
-    LastName: string;
-    MiddleName: string;
-    Avatar: any
+    id: number;
+    personOne: number;
+    personTwo: number;
+    status: any;
+    login: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    avatar: any
+}
+
+export interface ISearchResult {
+    addedFriendResult: IFriendResponse[];
+    noAddedFriendResult: IFriendResponse[];
 }
