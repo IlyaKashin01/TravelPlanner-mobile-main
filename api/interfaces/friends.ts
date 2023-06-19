@@ -1,5 +1,6 @@
 export interface IFriendRequest {
-
+    personOne: number;
+    personTwo: number;
 }
 
 

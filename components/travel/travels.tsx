@@ -34,7 +34,7 @@ const Travels = () => {
         setTake(take + take);
     }
     const renderItem = ({ item }) => (
-        <Travel id={item.id} name={item.name} description={item.description} dateE={item.dateEnd} dateS={item.dateStart} />
+        <Travel id={item.id} name={item.name} description={item.description} dateE={item.dateEnd} dateS={item.dateStart} expectedCost={item.expectedCost} actualCost={item.actualCost} projectedCost={item.projectedCost} />
     );
 
     return (

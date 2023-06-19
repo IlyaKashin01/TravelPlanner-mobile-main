@@ -6,9 +6,10 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import { useFriends } from '../api/hooks/useFriends';
 import { useAuth } from '../api/hooks/useAuth';
 import { AntDesign } from '@expo/vector-icons';
+import { IFriendRequest } from '../api/interfaces/friends';
 
 const Friends = () => {
-    const { friends, getFriends, searchResult, search, isLoading } = useFriends();
+    const { friends, getFriends, searchResult, search, addFriend, isLoading } = useFriends();
     const { user } = useAuth();
     useEffect(() => {
         getFriends(0, 10, 1);
@@ -31,6 +32,11 @@ const Friends = () => {
     };
 
     const [searchValue, setSearchValue] = useState<string>("");
+    const [friendRequest, setFriendRequest] = useState<IFriendRequest>({} as IFriendRequest);
+    const sendRequest = (personOne: number, personTwo: number) => {
+        setFriendRequest({ ...friendRequest, personOne: personOne, personTwo: personTwo });
+        addFriend(friendRequest);
+    }
     return (
         <GestureHandlerRootView style={styles.container}>
             <View style={styles.searchContainer}>
@@ -96,7 +102,7 @@ const Friends = () => {
                                         <Text style={styles.chatName}>{item.login}</Text>
                                         <Text style={styles.chatName}>{item.firstName} {item.lastName}</Text>
                                     </View>
-                                    <TouchableOpacity style={styles.button}>
+                                    <TouchableOpacity style={styles.button} onPress={() => sendRequest(user.id, item.id)}>
                                         <Text style={styles.lastMessageDate}>Добавить</Text>
                                     </TouchableOpacity>
                                 </View>

@@ -6,6 +6,8 @@ export interface ITravelContext {
     travel: ITravel;
     travels: ITravel[];
     setTravels: any;
+    setTravel: any;
+    getTravel: (key: number) => Promise<void>;
     isLoading: boolean;
     getTravels: (skip: number, take: number, searchValue: number) => Promise<void>;
     createTravel: (JourneyRequest: ICreateTravel) => Promise<IOperationResult<number>>;

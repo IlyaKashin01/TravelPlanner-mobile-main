@@ -26,7 +26,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
     const [travels, setTravels] = useState<ITravel[]>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const { getToken, token } = useAuth();
+    const { getToken, token, user } = useAuth();
 
     const clearError = () => setError(null);
 
@@ -34,6 +34,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
         : Promise<void> => {
         try {
             getToken();
+            setIsLoading(true);
             const { data } = await axios
                 .get<IOperationResult<any>>(
                     `${API_HOST}journey/getAllJourney?_skip=${skip}&_take=${take}&_searchValue=${searchValue}`,
@@ -53,6 +54,7 @@ const TravelProvider: FC<Props> = ({ children }) => {
         } catch (e) {
             console.log(getToken());
         } finally {
+            setIsLoading(false);
         }
     }
 
@@ -88,18 +90,48 @@ const TravelProvider: FC<Props> = ({ children }) => {
         }
     }
 
+    const getTravel = async (key: number)
+        : Promise<void> => {
+        try {
+            getToken();
+            setIsLoading(true);
+            const { data } = await axios
+                .get<IOperationResult<any>>(
+                    `${API_HOST}journey/getJourneyById?id=${key}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+
+                .then((x) => {
+                    //console.log(x.data.result?.items);
+                    return x;
+                });
+            setTravel(data?.result);
+            console.log(data.result)
+            if (data.message) setError(data.message);
+        } catch (e) {
+            console.log(getToken());
+        } finally {
+            setIsLoading(false);
+        }
+    }
     const value = useMemo(() =>
     ({
         travel,
         travels,
         setTravels,
+        setTravel,
+        getTravel,
         isLoading,
         getTravels,
         createTravel,
         error,
         setError,
         clearError,
-    }), [travel, travels, setTravels, isLoading, getTravels, createTravel, error, setError, clearError])
+    }), [travel, travels, setTravels, setTravel, getTravel, isLoading, getTravels, createTravel, error, setError, clearError])
     return <TravelContext.Provider value={value}>{children}</TravelContext.Provider>
 }
 

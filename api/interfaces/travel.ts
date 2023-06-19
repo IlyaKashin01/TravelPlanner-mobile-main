@@ -4,7 +4,12 @@ export interface ITravel {
     description: string,
     dateStart: Date,
     dateEnd: Date,
+    expectedCost: any;
+    actualCost: any;
+    projectedCost: any;
     categoryId: number,
+    countPerson: number;
+    countDays: number;
 }
 
 export interface ICreateTravel {

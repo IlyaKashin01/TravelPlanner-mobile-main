@@ -1,6 +1,5 @@
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState, useRef, Dispatch, FC, SetStateAction } from 'react'
-import { useAuth } from "../api/hooks/useAuth";
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Modalize } from 'react-native-modalize';
@@ -10,8 +9,7 @@ export interface Props {
     setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalProfile: React.FC<Props> = ({ showModal, setShowModal }) => {
-    const { logout } = useAuth();
+const TravelModal: React.FC<Props> = ({ showModal, setShowModal }) => {
     const navigation = useNavigation<StackNavigationProp<any>>();
 
     return (
@@ -29,33 +27,39 @@ const ModalProfile: React.FC<Props> = ({ showModal, setShowModal }) => {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
 
-                        <Pressable
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => { setShowModal(!showModal); navigation.navigate("addCoordinates") }}
+                        >
+                            <Text style={styles.textStyle}>Add coordinates</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => { setShowModal(!showModal); navigation.navigate("showCoordinates") }}
+                        >
+                            <Text style={styles.textStyle}>View coordinates</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => { setShowModal(!showModal); navigation.navigate("createService") }}
+                        >
+                            <Text style={styles.textStyle}>Add service</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => { setShowModal(!showModal); navigation.navigate("listServices") }}
+                        >
+                            <Text style={styles.textStyle}>View services</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setShowModal(!showModal)}
                         >
                             <Text style={styles.textStyle}>Закрыть окно</Text>
-                        </Pressable>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => { setShowModal(!showModal); navigation.navigate("addAvatar"); }}
-                        >
-                            <Text style={styles.textStyle}>Добавить аватар</Text>
-                        </Pressable>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={logout}
-                        >
-                            <Text style={styles.textStyle}>Выйти</Text>
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
-            {/* <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-            >
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable> */}
         </View>
     )
 }
@@ -100,4 +104,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ModalProfile
+export default TravelModal

@@ -3,7 +3,7 @@ import { IOperationResult } from "../interfaces/operationResult";
 import axios, { AxiosError } from 'axios';
 import { API_HOST } from "../apiHost";
 import { IFriendContext } from "../contexts/IFriendContext";
-import { IFriendResponse, ISearchResult } from "../interfaces/friends";
+import { IFriendRequest, IFriendResponse, ISearchResult } from "../interfaces/friends";
 import { useAuth } from "../hooks/useAuth";
 
 export const FriendContext = createContext<IFriendContext>({} as IFriendContext);
@@ -67,15 +67,41 @@ const FriendProvider: FC<Props> = ({ children }) => {
             setIsLoading(false);
         }
     }
+    const addFriend = async (request: IFriendRequest): Promise<IOperationResult<Boolean>> => {
+        try {
+            getToken();
+            setIsLoading(true);
+            const { data } = await axios
+                .post<IOperationResult<Boolean>>(
+                    `${API_HOST}friend/addFriend`,
+                    {
+                        ...request
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+            if (data) setIsLoading(false);
+            return data;
+        }
+        catch (e) {
 
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
     const value = useMemo(() =>
     ({
         friends,
         getFriends,
         searchResult,
         search,
+        addFriend,
         isLoading,
-    }), [friends, getFriends, searchResult, search, isLoading])
+    }), [friends, getFriends, searchResult, search, addFriend, isLoading])
     return <FriendContext.Provider value={value}>{children}</FriendContext.Provider>
 }
 
